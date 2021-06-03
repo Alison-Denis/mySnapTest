@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "my_snap",
-    "slug": "my_snap",
+    "name": "snapchat",
+    "slug": "snapchat",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",

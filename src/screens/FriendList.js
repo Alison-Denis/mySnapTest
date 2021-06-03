@@ -22,19 +22,6 @@ const FriendListScreen=() =>{
           setResults(json.data)
         })
 
-let snap_id = results.getParam('snap_id', 0);
-    fetch('https://snapi-wac.herokuapp.com/snap/' + snap_id)
-        .then((response) => response.json())
-        .then((responseJson) => {
-        setResults({
-            isLoading: false,
-            services: responseJson.data,
-        }, function(){
-            });
-        })
-        .catch((error) =>{
-            console.error(error);
-        });
 
     return (
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor:'#000', marginTop:30 }}>

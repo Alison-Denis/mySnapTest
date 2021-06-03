@@ -18,17 +18,28 @@ export default class Login extends React.Component{
 
     getData = async () => {
         try{
-            const value =  await AsyncStorage.getItem('email');
+            let value = await AsyncStorage.getItem("token");
             if(value !== null){
-                this.setState({email: value})
+                console.log("token = " + value)
+                this.setState({token: value})
             }
         } catch(error){
             console.log(error);
         }
         try{
-            const value =  await AsyncStorage.getItem('password');
-            if(value !== null){
-                this.setState({password: value})
+            let value2 = await AsyncStorage.getItem("emailUser");
+            if(value2 !== null){
+                console.log("email =" + value2)
+                this.setState({email: value2})
+            }
+        } catch(error){
+            console.log(error);
+        }
+        try{
+            let value3 = await AsyncStorage.getItem("passwordUser");
+            if(value3 !== null){
+                console.log("password =" + value3)
+                this.setState({password: value3})
             }
         } catch(error){
             console.log(error);
@@ -46,7 +57,31 @@ export default class Login extends React.Component{
         }else if(field =='message')
         {
         this.setState({ message:text })
+      }else if(field =='token')
+        {
+        this.setState({ token:text })
         }
+    }
+
+    saveData = async () => {
+      try {
+        await AsyncStorage.setItem('token', this.state.token)
+        console.log('Data successfully saved')
+      } catch (e) {
+        console.log('Failed to save the data to the storage')
+      }
+      try {
+        await AsyncStorage.setItem('emailUser', this.state.email)
+        console.log('email successfully saved')
+      } catch (e) {
+        console.log('email to save the data to the storage')
+      }
+      try {
+        await AsyncStorage.setItem('passwordUser', this.state.password)
+        console.log('password successfully saved')
+      } catch (e) {
+        console.log('password to save the data to the storage')
+      }
     }
 
     submit = async () => {
@@ -66,10 +101,12 @@ export default class Login extends React.Component{
         .then(response => {
 
             if(response.data.token){
-                    async () => await AsyncStorage.setItem('token', response.data.token);
-                    this.updateValue('Login successful','message');
-                    const {navigate} = this.props.navigation;
-                    navigate("Home");
+              this.updateValue(response.data.token,'token')
+              this.updateValue(collection.email,'email')
+              this.updateValue(collection.password,'password')
+              this.saveData();
+              const {navigate} = this.props.navigation;
+              navigate("Home");
             }
             else{
                     this.updateValue(response.data,'message');
@@ -108,11 +145,11 @@ export default class Login extends React.Component{
                 <Text style={{color:"white"}}>Login</Text>
             </TouchableOpacity>
             <Text onPress={()=>navigate('Register')} style={{alignSelf:"center",opacity:0.7,paddingVertical:30,color:"#e5be00"}} >New User ?</Text>
-            
+
 
         </View>
 
-            
+
         )
     }
 }
